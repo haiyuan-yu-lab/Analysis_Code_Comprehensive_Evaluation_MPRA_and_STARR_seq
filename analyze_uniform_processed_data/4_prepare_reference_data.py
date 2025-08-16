@@ -183,3 +183,73 @@ for d, f in zip(distance_list, filename_str_list):
     data_path = os.path.join(project_root, 'data', 'Reference', 'hg38', 'GENCODE_v45', 'processed_files',fname)
     promoter_both.to_csv(data_path, sep='\t', header=False, index=False)
     print('-------')
+
+# ==============================================================================
+# GENCODE v45: protein-coding exons → middle regions → exclude UTR overlaps
+# Saves:
+#   1) gencode_v45_protein_coding_exons_all.bed.gz
+#   2) gencode_v45_protein_coding_exons_middle_trim300_gt100.bed.gz
+#   3) gencode_v45_protein_coding_exons_middle_trim300_gt100_noUTR.bed.gz
+# ==============================================================================
+
+# Parameters (tweak if needed)
+TRIM_BP = 300
+MIN_MID_SIZE = 100
+
+# Output dir (reuse your project_root structure)
+gencode_proc_dir = os.path.join(
+    project_root, 'data', 'reference', 'hg38', 'GENCODE_v45', 'processed_files'
+)
+os.makedirs(gencode_proc_dir, exist_ok=True)
+
+# 1) Select protein-coding exons and UTRs from full GENCODE v45 df (v45)
+exon_df = v45[(v45['Feature'] == 'exon') & (v45['gene_type'] == 'protein_coding')].copy()
+utr_df  = v45[(v45['Feature'] == 'UTR')  & (v45['gene_type'] == 'protein_coding')].copy()
+
+keep_cols = ['Chromosome', 'Start', 'End', 'Score', 'Strand',
+             'Source', 'Feature', 'gene_id', 'gene_type', 'gene_name']
+exon_df = exon_df[keep_cols].drop_duplicates(['Chromosome', 'Start', 'End'])
+utr_df  = utr_df[keep_cols].drop_duplicates(['Chromosome', 'Start', 'End'])
+
+exon_df = exon_df.sort_values(['Chromosome', 'Start', 'End'])
+utr_df  = utr_df.sort_values(['Chromosome', 'Start', 'End'])
+
+# Save all protein-coding exons
+out_all_exons = os.path.join(
+    gencode_proc_dir, 'gencode_v45_protein_coding_exons_all.bed.gz'
+)
+exon_df.to_csv(out_all_exons, sep='\t', index=False, header=False, compression='gzip')
+print(f"[WRITE] {out_all_exons}  (n={len(exon_df)})")
+
+# 2) Build middle-of-exon regions (trim both ends, keep > MIN_MID_SIZE)
+mid = exon_df.copy().astype({'Start': int, 'End': int})
+mid['Start'] = mid['Start'] + TRIM_BP
+mid['End']   = mid['End']   - TRIM_BP
+mid['size']  = mid['End'] - mid['Start']
+
+# Remove invalid/too-short intervals
+mid = mid[(mid['End'] > mid['Start']) & (mid['size'] > MIN_MID_SIZE)].copy()
+mid = mid.sort_values(['Chromosome', 'Start', 'End']).drop_duplicates(['Chromosome', 'Start', 'End'])
+
+out_mid = os.path.join(
+    gencode_proc_dir, f'gencode_v45_protein_coding_exons_middle_trim{TRIM_BP}_gt{MIN_MID_SIZE}.bed.gz'
+)
+mid.to_csv(out_mid, sep='\t', index=False, header=False, compression='gzip')
+print(f"[WRITE] {out_mid}  (n={len(mid)})")
+
+# 3) Exclude any middle-of-exon region overlapping UTR (use minimal BED cols for speed)
+mid_min = mid[['Chromosome', 'Start', 'End']]
+utr_min = utr_df[['Chromosome', 'Start', 'End']]
+
+mid_bt = pybedtools.BedTool.from_dataframe(mid_min)
+utr_bt = pybedtools.BedTool.from_dataframe(utr_min)
+
+# v=True → keep only A intervals with NO overlap with B
+mid_no_utr = mid_bt.intersect(utr_bt, v=True).to_dataframe(disable_auto_names=True, header=None)
+mid_no_utr.columns = ['Chromosome', 'Start', 'End']
+
+out_mid_no_utr = os.path.join(
+    gencode_proc_dir, f'gencode_v45_protein_coding_exons_middle_trim{TRIM_BP}_gt{MIN_MID_SIZE}_noUTR.bed.gz'
+)
+mid_no_utr.to_csv(out_mid_no_utr, sep='\t', index=False, header=False, compression='gzip')
+print(f"[WRITE] {out_mid_no_utr}  (n={len(mid_no_utr)})")

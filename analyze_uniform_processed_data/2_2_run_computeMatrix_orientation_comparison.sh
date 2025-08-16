@@ -32,16 +32,16 @@ declare -A orientation_indep_files
 declare -A either_orientation_files
 
 # LentiMPRA:
-orientation_indep_files[LentiMPRA]="${BASE_DIR}/data/uniform_processed_data/LentiMPRA/merged_peak/merged_enhancer_peak_orientation_independent.bed.gz"
-either_orientation_files[LentiMPRA]="${BASE_DIR}/data/uniform_processed_data/LentiMPRA/merged_peak/merged_enhancer_peak_from_either_in_tested_both.bed.gz"
+orientation_indep_files[LentiMPRA]="${BASE_DIR}/data/uniform_processed_data/LentiMPRA/peak_level/enhancer_peak_in_both_orientation.bed.gz"
+either_orientation_files[LentiMPRA]="${BASE_DIR}/data/uniform_processed_data/LentiMPRA/peak_level/enhancer_peak_iactive_in_one_but_tested_both.bed.gz"
 
 # ATAC_STARR_seq:
-orientation_indep_files[ATAC_STARR]="${BASE_DIR}/data/uniform_processed_data/ATAC_STARR_seq/merged_peak/merged_enhancer_peak_orientation_independent.bed.gz"
-either_orientation_files[ATAC_STARR]="${BASE_DIR}/data/uniform_processed_data/ATAC_STARR_seq/merged_peak/merged_enhancer_peak_from_either_in_tested_both.bed.gz"
+orientation_indep_files[ATAC_STARR]="${BASE_DIR}/data/uniform_processed_data/ATAC_STARR_seq/peak_level/enhancer_peak_in_both_orientation.bed.gz"
+either_orientation_files[ATAC_STARR]="${BASE_DIR}/data/uniform_processed_data/ATAC_STARR_seq/peak_level/enhancer_peak_iactive_in_one_but_tested_both.bed.gz"
 
 # WHG_STARR_seq:
-orientation_indep_files[WHG_STARR]="${BASE_DIR}/data/uniform_processed_data/WHG_STARR_seq/merged_peak/merged_enhancer_peak_orientation_independent.bed.gz"
-either_orientation_files[WHG_STARR]="${BASE_DIR}/data/uniform_processed_data/WHG_STARR_seq/merged_peak/merged_enhancer_peak_from_either_in_tested_both.bed.gz"
+orientation_indep_files[WHG_STARR]="${BASE_DIR}/data/uniform_processed_data/WHG_STARR_seq/peak_level/enhancer_peak_in_both_orientation.bed.gz"
+either_orientation_files[WHG_STARR]="${BASE_DIR}/data/uniform_processed_data/WHG_STARR_seq/peak_level/enhancer_peak_iactive_in_one_but_tested_both.bed.gz"
 
 # -------------------------------
 # Define BigWig signal file paths.

@@ -631,8 +631,8 @@ promoter_4kb_bed = pybedtools.BedTool(os.path.join(project_root, 'data', 'refere
 # -------------------- Define Datasets for Annotation -------------------------
 
 lenti_datasets = [
-    ('LentiMPRA', 'element_level_all_result.bed.gz', 'merged_enhancer_peak_in_either_orientation.bed.gz', 'annotated_tested_regions_either_orientation.bed.gz'),
-    ('LentiMPRA', 'all_element_tested_in_both_orientations.bed.gz', 'merged_enhancer_peak_orientation_independent.bed.gz', 'annotated_tested_regions_both_orientations.bed.gz')
+    ('LentiMPRA', 'all_results_tested_in_either_orientation.bed.gz', 'enhancer_peak_in_either_orientation.bed.gz', 'annotated_tested_regions_either_orientation.bed.gz'),
+    ('LentiMPRA', 'all_results_tested_in_both_orientations.bed.gz', 'enhancer_peak_in_both_orientation.bed.gz', 'annotated_tested_regions_both_orientations.bed.gz')
 ]
 
 tiling_datasets = [
@@ -649,8 +649,8 @@ for i, (assay, bin_file, peak_file, output_file) in enumerate(lenti_datasets):
     print(f"\n[Step {i+1}] Annotating {output_file.split('_')[-2]} orientation for {assay}...")
 
     set_dir(os.path.join(project_root, 'data', 'uniform_processed_data', assay, 'annotated_results'))
-    bin_data_path = os.path.join(project_root, 'data', 'uniform_processed_data', assay, 'element_level', bin_file)
-    merged_peak_path = os.path.join(project_root, 'data', 'uniform_processed_data', assay, 'merged_peak', peak_file)
+    bin_data_path = os.path.join(project_root, 'data', 'uniform_processed_data', assay, 'bin_level', bin_file)
+    merged_peak_path = os.path.join(project_root, 'data', 'uniform_processed_data', assay, 'peak_level', peak_file)
 
     annotated = run_annotation_pipeline(merged_peak_path, bin_data_path)
     print(f"Annotated {len(annotated)} regions")
@@ -665,8 +665,8 @@ for dataset in tiling_datasets:
 
     set_dir(os.path.join(project_root, 'data', 'uniform_processed_data', 'TilingMPRA', dataset, 'annotated_results'))
 
-    bin_data_path = os.path.join(project_root, 'data', 'uniform_processed_data', 'TilingMPRA', dataset, 'element_level', 'element_level_all_result.bed.gz')
-    merged_peak_path = os.path.join(project_root, 'data', 'uniform_processed_data', 'TilingMPRA', dataset, 'merged_peak', 'merged_enhancer_peak_in_either_orientation.bed.gz')
+    bin_data_path = os.path.join(project_root, 'data', 'uniform_processed_data', 'TilingMPRA', dataset, 'bin_level', 'all_results_tested_in_either_orientation.bed.gz')
+    merged_peak_path = os.path.join(project_root, 'data', 'uniform_processed_data', 'TilingMPRA', dataset, 'peak_level', 'enhancer_peak_in_either_orientation.bed.gz')
 
     annotated_either = run_annotation_pipeline(merged_peak_path, bin_data_path)
     print(f"Annotated {len(annotated_either)} regions (either orientation)")
@@ -677,8 +677,8 @@ for dataset in tiling_datasets:
     if 'OL13' in dataset:
         print(f"\nAnnotating dataset: {dataset} (both orientations)")
 
-        bin_data_path = os.path.join(project_root, 'data', 'uniform_processed_data', 'TilingMPRA', dataset, 'element_level', 'all_element_tested_in_both_orientations.bed.gz')
-        merged_peak_path = os.path.join(project_root, 'data', 'uniform_processed_data', 'TilingMPRA', dataset, 'merged_peak', 'merged_enhancer_peak_orientation_independent.bed.gz')
+        bin_data_path = os.path.join(project_root, 'data', 'uniform_processed_data', 'TilingMPRA', dataset, 'bin_level', 'all_results_tested_in_both_orientations.bed.gz')
+        merged_peak_path = os.path.join(project_root, 'data', 'uniform_processed_data', 'TilingMPRA', dataset, 'peak_level', 'enhancer_peak_in_both_orientation.bed.gz')
 
         annotated_both = run_annotation_pipeline(merged_peak_path, bin_data_path)
         print(f"Annotated {len(annotated_both)} regions (both orientations)")
@@ -689,12 +689,13 @@ for dataset in tiling_datasets:
 # -------------------- Annotation for STARR-seq datasets -------------------------
 print("\nRunning annotation for STARR-seq datasets...")
 for dataset in starr_datasets:
+    
     print(f"\nAnnotating dataset: {dataset} (either orientation)")
 
     set_dir(os.path.join(project_root, 'data', 'uniform_processed_data', dataset, 'annotated_results'))
 
-    bin_data_path = os.path.join(project_root, 'data', 'uniform_processed_data', dataset, 'bin_level', 'bin_level_all_result.bed.gz')
-    merged_peak_path = os.path.join(project_root, 'data', 'uniform_processed_data', dataset, 'merged_peak', 'merged_enhancer_peak_in_either_orientation.bed.gz')
+    bin_data_path = os.path.join(project_root, 'data', 'uniform_processed_data', dataset, 'bin_level', 'all_results_tested_in_either_orientation.bed.gz')
+    merged_peak_path = os.path.join(project_root, 'data', 'uniform_processed_data', dataset, 'peak_level', 'enhancer_peak_in_either_orientation.bed.gz')
 
     annotated_either = run_annotation_pipeline(merged_peak_path, bin_data_path)
     print(f"Annotated {len(annotated_either)} regions (either orientation)")
@@ -704,8 +705,8 @@ for dataset in starr_datasets:
 
     print(f"\nAnnotating dataset: {dataset} (both orientations)")
 
-    bin_data_path = os.path.join(project_root, 'data', 'uniform_processed_data', dataset, 'bin_level', 'all_bin_tested_in_both_orientations.bed.gz')
-    merged_peak_path = os.path.join(project_root, 'data', 'uniform_processed_data', dataset, 'merged_peak', 'merged_enhancer_peak_orientation_independent.bed.gz')
+    bin_data_path = os.path.join(project_root, 'data', 'uniform_processed_data', dataset, 'bin_level', 'all_results_tested_in_both_orientations.bed.gz')
+    merged_peak_path = os.path.join(project_root, 'data', 'uniform_processed_data', dataset, 'peak_level', 'enhancer_peak_in_both_orientation.bed.gz')
 
     annotated_both = run_annotation_pipeline(merged_peak_path, bin_data_path)
     print(f"Annotated {len(annotated_both)} regions (both orientations)")

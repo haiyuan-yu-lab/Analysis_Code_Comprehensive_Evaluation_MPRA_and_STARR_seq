@@ -26,19 +26,19 @@ declare -A processed_files
 
 # LentiMPRA:
 original_files[LentiMPRA]="${BASE_DIR}/data/lab_reported_data/processed_files/LentiMPRA/active_merged_all.bed"
-processed_files[LentiMPRA]="${BASE_DIR}/data/uniform_processed_data/LentiMPRA/merged_peak/merged_enhancer_peak_orientation_independent.bed.gz"
+processed_files[LentiMPRA]="${BASE_DIR}/data/uniform_processed_data/LentiMPRA/peak_level/enhancer_peak_in_both_orientation.bed.gz"
 
 # ATAC-STARR-seq:
 original_files[ATAC_STARR]="${BASE_DIR}/data/lab_reported_data/processed_files/ATAC_STARR_seq/ATAC_STARR_merged_enhancer_peaks_in_either_orientation.bed"
-processed_files[ATAC_STARR]="${BASE_DIR}/data/uniform_processed_data/ATAC_STARR_seq/merged_peak/merged_enhancer_peak_orientation_independent.bed.gz"
+processed_files[ATAC_STARR]="${BASE_DIR}/data/uniform_processed_data/ATAC_STARR_seq/peak_level/enhancer_peak_in_both_orientation.bed.gz"
 
 # WHG-STARR-seq:
 original_files[WHG_STARR]="${BASE_DIR}/data/lab_reported_data/original_files/WHG_STARR_seq/ENCFF908UFR.bed.gz"
-processed_files[WHG_STARR]="${BASE_DIR}/data/uniform_processed_data/WHG_STARR_seq/merged_peak/merged_enhancer_peak_orientation_independent.bed.gz"
+processed_files[WHG_STARR]="${BASE_DIR}/data/uniform_processed_data/WHG_STARR_seq/peak_level/enhancer_peak_in_both_orientation.bed.gz"
 
 # TilingMPRA:
 original_files[TilingMPRA]="${BASE_DIR}/data/lab_reported_data/processed_files/TilingMPRA/all_TilingMPRA_active_from_lab_reported_data.bed.gz"
-processed_files[TilingMPRA]="${BASE_DIR}/data/uniform_processed_data/TilingMPRA/all_TilingMPRA_merged_enhancer_peak_in_either_orientation.bed.gz"
+processed_files[TilingMPRA]="${BASE_DIR}/data/uniform_processed_data/TilingMPRA/all_TilingMPRA_enhancer_peak_in_either_orientation.bed.gz"
 
 # -------------------------------
 # Define BigWig signal file paths.
